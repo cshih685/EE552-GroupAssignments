@@ -16,6 +16,8 @@ import javax.swing.event.*;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 //import java.io.BufferedWriter;
 
 
@@ -26,6 +28,7 @@ public class HW_TextEditor extends JFrame{
     private JMenuItem New, save, open, quit, Compile,Run;
     private JTextArea t = new JTextArea();
     private FileDialog openFile;
+    private Console con;
     private boolean isSaved= false;
     
 //    openDia = new FileDialog(this, "Open", FileDialog.LOAD);
@@ -138,11 +141,47 @@ public class HW_TextEditor extends JFrame{
         Runtime r = Runtime.getRuntime();
         Process p = r.exec("javac "+ fileName);
         BufferedReader isr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+//        System.out.println(isr);
+//        PrintWriter pw = new PrintWriter(p.getOutputStream());
+        StringBuilder sb = new StringBuilder();
         String line;
+//        String allLine = null;
         while ((line = isr.readLine()) != null)
-            System.out.println(line);
+//            System.out.println(line);
+            sb.append(line+"\n");
+//            con.textArea.append(line + "\n");
+//            allLine += "/n"+line;
+//        t.setText(p.getErrorStream().toString());
+
         int status = p.exitValue();
-        System.out.println("Process ran with result: " + status);   
+        System.out.println("Process ran with result: " + status);          
+        System.out.println(sb);
+        String ms = sb.toString();
+//        String regex = "[A-Za-z]\\w+.[A-Za-z]\\w+:[0-9]\\d+";
+//        System.out.println(sb.toString().matches(regex));
+        Pattern r1 = Pattern.compile("([A-Za-z]\\w+.[A-Za-z])\\w+:[0-9]\\d+");        
+//        Pattern r1 = Pattern.compile("(\\w+(?:\\.\\w+)*$)");
+        Matcher m1 = r1.matcher(ms);
+        String msp = null;
+        String[] sms;
+        String fn;
+        String l;
+        while(m1.find())
+            msp = m1.group();
+            sms = msp.split(":");
+            fn = sms[0];
+            l = sms[1];
+            System.out.println("File Name: "+ fn + ", Error on line: "+ l);
+            t.setText("File Name: "+ fn + ", Error on line: "+ l);
+//            System.out.format("Error on line %d in file: %s%n", l, fn);
+            
+//            System.out.println(m1.group().getClass().getName());
+        
+//        String match = (sb.toString()).substring(m1.start(), m1.end());
+//        System.out.println(match);
+//        if (m1.find())
+//         System.out.format("Error on line %d in file: %s%n", m1.group());
+
     }
 
 
