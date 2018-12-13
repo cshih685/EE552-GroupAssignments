@@ -47,12 +47,12 @@ public class HWBeanEditor extends JFrame {
         // add anonymous inner classes for textFields
         textF1.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                System.out.println(attrs[0]); 
+                System.out.println(attrs[0]+ ": "+ textF1.getText()); 
             }
         });
         textF2.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                System.out.println(attrs[1]); 
+                System.out.println(attrs[1]+ ": "+ textF2.getText()); 
             }
         });
         
